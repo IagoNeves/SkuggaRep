@@ -78,6 +78,13 @@
 {
     [super viewDidLoad];
     
+    //10 lines of stupid code for git test here!
+    self.commentArray = [[NSMutableArray alloc]init];
+    self.commentArray = [[NSMutableArray alloc]init];
+    self.commentArray = [[NSMutableArray alloc]init];
+    self.commentArray = [[NSMutableArray alloc]init];
+    self.commentArray = [[NSMutableArray alloc]init];
+    self.commentArray = [[NSMutableArray alloc]init];
     self.commentArray = [[NSMutableArray alloc]init];
     self.commentArray = [[NSMutableArray alloc]init];
     self.commentArray = [[NSMutableArray alloc]init];
