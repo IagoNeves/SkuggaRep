@@ -34,9 +34,6 @@
 
 @property (strong, nonatomic) UIImage *placeholder;
 
-//this is comment code
-
-@property (strong, nonatomic) NSMutableArray *commentArray;
 
 @property (strong, nonatomic) NSMutableArray *friendListWithoutAccentuation;
 
@@ -78,17 +75,6 @@
 {
     [super viewDidLoad];
     
-    //10 lines of stupid code for git test here!
-    self.commentArray = [[NSMutableArray alloc]init];
-    self.commentArray = [[NSMutableArray alloc]init];
-    self.commentArray = [[NSMutableArray alloc]init];
-    self.commentArray = [[NSMutableArray alloc]init];
-    self.commentArray = [[NSMutableArray alloc]init];
-    self.commentArray = [[NSMutableArray alloc]init];
-    self.commentArray = [[NSMutableArray alloc]init];
-    self.commentArray = [[NSMutableArray alloc]init];
-    self.commentArray = [[NSMutableArray alloc]init];
-    self.commentArray = [[NSMutableArray alloc]init];
     
     self.didEnterViewDidLoad = YES;
     
@@ -218,7 +204,6 @@
 {
     //cache muito grande?
     //zoneamento (ultimo) com imagem do primeiro
-
     
     ContactCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ContactCell"];
     
@@ -530,22 +515,17 @@
     {
         numberOfPreviousContacts += [self.allContactsNamesSectioned[j] count];
     }
+    
     for (NSString *name in allNamesBeginningWithLetter)
     {
         self.allContactsNamesSectioned[indexOfLetter][i] = name;
-        
         self.allContactsPhotosURLStringsSectioned[indexOfLetter][i] = self.facebookManager.friends[numberOfPreviousContacts + i][@"picture"][@"data"][@"url"];
         self.allContactsIDsSectioned[indexOfLetter][i] = self.facebookManager.friends[numberOfPreviousContacts + i][@"id"];
         i++;
     }
-    if (indexOfLetter == [self.allContactsNamesSectioned count]-2)
-    {
-        //for (NSString *name in self.allContactsNamesSectioned[indexOfLetter])
-        {
-            self.allContactsPhotosURLStringsSectioned[indexOfLetter + 1][i] = self.facebookManager.friends[numberOfPreviousContacts + i][@"picture"][@"data"][@"url"];
-            self.allContactsIDsSectioned[indexOfLetter + 1][i] = self.facebookManager.friends[numberOfPreviousContacts + i][@"id"];
-        }
-    }
+    
+    
+    
     //i must still solve the problem that the first section is the last, which means z is the first letter
     //and therefore the contacts beginning with z get the images from the letter a
     return allNamesBeginningWithLetter;

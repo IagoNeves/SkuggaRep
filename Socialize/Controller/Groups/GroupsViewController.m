@@ -10,6 +10,7 @@
 #import "Singleton.h"
 #import "SocializeGroup.h"
 #import "MainMapViewController.h"
+#import <Parse/Parse.h>
 
 @interface GroupsViewController ()
 
@@ -18,14 +19,13 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *GroupsNavigationItem;
-@property ( nonatomic) NSString *GroupName;
+@property ( nonatomic) NSMutableArray *groupNames;
 @property ( nonatomic) UIImage *GroupImage;
 @property ( nonatomic) NSInteger currentRow;
 
 @property (weak, nonatomic) IBOutlet UITableView *groupListTableView;
 
 @property(strong,nonatomic) UIAlertView* popUpWindowDelete;
-
 
 
 
@@ -52,6 +52,58 @@
 
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(EditTable:)];
     [self.navigationItem setLeftBarButtonItem:editButton];
+    
+    self.groupNames = [[NSMutableArray alloc]init];
+    
+    
+    
+    
+    
+//    PFQuery *query = [PFQuery queryWithClassName:@"Groups"];
+//    [query getObjectInBackgroundWithId:@"GLq07f70IC" block:^(PFObject *group, NSError *error)
+//     {
+//         [self.groupNames addObject: group[@"groupName"]];
+//         [[NSOperationQueue mainQueue] addOperationWithBlock:
+//          ^{
+//              [self.tableView reloadData];
+//          }];
+//
+//     }];
+    
+    
+    
+    
+    
+    
+    
+    PFQuery *groupsQuery = [PFQuery queryWithClassName:@"Groups"];
+    [groupsQuery selectKeys:@[@"groupName"]];
+    [groupsQuery findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error)
+    {
+        for (PFObject *object in results)
+        {
+            [object fetchIfNeeded:nil];
+            if ([object objectForKey:@"groupName"]) {
+                [self.groupNames addObject:[object objectForKey:@"groupName"]];
+                NSLog(@"NOS DEMOS BEM");
+            } else {
+                NSLog(@"#FOGO");
+            }
+        }
+        [[NSOperationQueue mainQueue] addOperationWithBlock:
+         ^{
+             [self.tableView reloadData];
+         }];
+    }];
+    
+
+//             [object fetchIfNeededInBackgroundWithBlock:^(PFObject *object, NSError *error)
+//             {
+//                 }];
+    
+    
+    
+    
     
 }
 
@@ -120,7 +172,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[Singleton singleton].allGroups count];
+    return [self.groupNames count];
 }
 
 
@@ -128,8 +180,8 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    NSMutableArray *socializeGroups = [Singleton singleton].allGroups;
-    NSMutableArray *socializeGroupsSpecific = [Singleton singleton].allGroupsSpecific;
+//    NSMutableArray *socializeGroups = [Singleton singleton].allGroups;
+//    NSMutableArray *socializeGroupsSpecific = [Singleton singleton].allGroupsSpecific;
     
     if (cell==nil)
     {
@@ -137,17 +189,62 @@
         cell.editingAccessoryType = YES;
     }
     
-    SocializeGroup *socializeGroup = socializeGroups[indexPath.row];
-    SocializeGroupSpecific *socializeGroupSpecific = socializeGroupsSpecific[indexPath.row];
-    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",socializeGroup.groupName]];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    SocializeGroup *socializeGroup = socializeGroups[indexPath.row];
+//    SocializeGroupSpecific *socializeGroupSpecific = socializeGroupsSpecific[indexPath.row];
+//    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",socializeGroup.groupName]];
+//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    
+//    [cell.accessoryView setBackgroundColor:[UIColor clearColor]];
+//    [cell.contentView setBackgroundColor:[UIColor clearColor]];
+//    cell.backgroundColor = [CustomUIColor darkerColorForColor:socializeGroupSpecific.groupColor];
     
-    [cell.accessoryView setBackgroundColor:[UIColor clearColor]];
-    [cell.contentView setBackgroundColor:[UIColor clearColor]];
-    cell.backgroundColor = [CustomUIColor darkerColorForColor:socializeGroupSpecific.groupColor];
+    
+    
+    
+    
+    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",self.groupNames[indexPath.row]]];
+    
+    
+ 
     
     return cell;
+    
+    
+//    
+//    
+//    // set up our query for the Book object
+//    PFQuery *groupQuery = [PFQuery queryWithClassName:@"Groups"];
+//    
+//    
+//    // configure any constraints on your query...
+//    // tell the query to fetch all of the Author objects along with the Book
+//    [groupQuery includeKey:@"usersInTheGroup"];
+//    
+//    // execute the query
+//    groupQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
+//    {
+//        if (!error)
+//        {
+//            NSLog(@"query successful");
+//        }
+//        else
+//        {
+//            NSLog(@"Error: %@ %@",error, [error userInfo]);
+//        }
+//    }
+//    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath NS_AVAILABLE_IOS(3_0);
 {

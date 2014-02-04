@@ -41,11 +41,11 @@
             <objects>
                 <viewController id="EUh-Fh-0IL" customClass="MainMapInfoViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zfY-7e-dcF">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pnq-5E-F1k">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -70,11 +70,11 @@
             <objects>
                 <viewController title="World Map" id="seN-Dw-w80" customClass="MainMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kSk-5l-Wkl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" id="e1X-pz-x3i">
-                                <rect key="frame" x="0.0" y="-5" width="320" height="539"/>
+                                <rect key="frame" x="0.0" y="-5" width="320" height="588"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
@@ -153,7 +153,7 @@
                     <connections>
                         <outlet property="GroupsNavigationItem" destination="rry-Dp-sJP" id="Elu-aF-DUw"/>
                         <outlet property="groupListTableView" destination="zCm-qx-Cff" id="fLt-XX-bjy"/>
-                        <outlet property="tableView" destination="zCm-qx-Cff" id="has-0N-qoQ"/>
+                        <outlet property="tableView" destination="zCm-qx-Cff" id="naQ-Lj-zRO"/>
                         <segue destination="hkc-3O-bEv" kind="push" identifier="newGroupSegue" id="LpF-Ri-yCW"/>
                         <segue destination="Fp7-4m-u1a" kind="modal" identifier="specificGroupSegue" id="aLl-hp-208"/>
                     </connections>
@@ -539,7 +539,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" id="0kn-lo-qjI" customClass="ColorPickerView">
-                                <rect key="frame" x="205.5" y="74" width="70" height="70"/>
+                                <rect key="frame" x="206" y="74" width="70" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="qTI-Ee-jhI">
@@ -547,7 +547,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="O8s-JT-Bot">
-                                        <rect key="frame" x="19.5" y="19.5" width="33" height="33"/>
+                                        <rect key="frame" x="20" y="20" width="33" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
@@ -607,11 +607,11 @@
             <objects>
                 <viewController id="k3h-RJ-j6H" customClass="GroupInfoViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Yc1-og-Q59">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" id="lrb-XK-ZBz">
-                                <rect key="frame" x="0.0" y="63" width="320" height="456"/>
+                                <rect key="frame" x="0.0" y="63" width="320" height="505"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="OEI-jJ-Y81">
@@ -793,6 +793,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="Fc1-3n-DrJ"/>
-        <segue reference="FZi-Ni-U33"/>
+        <segue reference="aLl-hp-208"/>
     </inferredMetricsTieBreakers>
 </document>

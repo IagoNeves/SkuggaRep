@@ -40,9 +40,7 @@
     
     SocializeGroupSpecific* thisGroupSpecific = [[SocializeGroupSpecific alloc]initGroupWithColor:self.colorPicker.groupColor isShownOnMap:self.addCurrentGroupToMainMap];
     
-    
-    //[[Singleton singleton].padronizedArrayOfColors removeObjectAtIndex:self.colorIndex];
-    
+        
     UINavigationController *navController = self.navigationController;
     [navController popToRootViewControllerAnimated:YES];
     
@@ -57,11 +55,31 @@
     
     id groupWarning = [NSNumber numberWithInteger: self.valueNotification];
     [parseGroup setObject: groupWarning forKey:@"groupWarningRadius"];
+  
+    NSArray *usersInTheGroupArray = [[NSArray alloc]init];
     
-   // [parseGroup setObject:self.groupUsers forKey:@"usersInTheGroup"];
+    for (SocializeUser *groupUser in  self.groupUsers)
+    {
+        PFObject *user = [PFObject objectWithClassName:@"User"];
+        [user setObject:groupUser.name forKey:@"name"];
+        [user setObject:groupUser.photo forKey:@"photo"];
+        [user setObject:groupUser.identificator forKey:@"identificator"];
+        [user setObject:groupUser.lastUpdateDate forKey:@"lastUpdateDate"];
+        [user save];
+        
+        [usersInTheGroupArray arrayByAddingObject:user];
+    }
+
+    
+    [parseGroup setObject:usersInTheGroupArray forKey:@"usersInTheGroup"];
+    
+    
+    
+    
+    [parseGroup save];
     
     [parseGroup saveInBackground];
-  
+    
 }
 
 
