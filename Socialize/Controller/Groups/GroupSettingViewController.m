@@ -58,6 +58,10 @@
   
     NSArray *usersInTheGroupArray = [[NSArray alloc]init];
     
+    NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:self.colorPicker.groupColor];
+    PFFile *colorFile = [PFFile fileWithData:colorData];
+    [parseGroup setObject:colorFile forKey:@"groupColor"];
+    
     for (SocializeUser *groupUser in  self.groupUsers)
     {
         PFObject *user = [PFObject objectWithClassName:@"User"];
@@ -65,21 +69,13 @@
         [user setObject:groupUser.photo forKey:@"photo"];
         [user setObject:groupUser.identificator forKey:@"identificator"];
         [user setObject:groupUser.lastUpdateDate forKey:@"lastUpdateDate"];
-        [user save];
+        [user saveInBackground];
         
         [usersInTheGroupArray arrayByAddingObject:user];
     }
-
-    
     [parseGroup setObject:usersInTheGroupArray forKey:@"usersInTheGroup"];
     
-    
-    
-    
-    [parseGroup save];
-    
     [parseGroup saveInBackground];
-    
 }
 
 

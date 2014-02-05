@@ -20,6 +20,7 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *GroupsNavigationItem;
 @property ( nonatomic) NSMutableArray *groupNames;
+@property ( nonatomic) NSMutableArray *groupColors;
 @property ( nonatomic) UIImage *GroupImage;
 @property ( nonatomic) NSInteger currentRow;
 
@@ -54,40 +55,32 @@
     [self.navigationItem setLeftBarButtonItem:editButton];
     
     self.groupNames = [[NSMutableArray alloc]init];
+    self.groupColors = [[NSMutableArray alloc]init];
     
     
     
-    
-    
-//    PFQuery *query = [PFQuery queryWithClassName:@"Groups"];
-//    [query getObjectInBackgroundWithId:@"GLq07f70IC" block:^(PFObject *group, NSError *error)
-//     {
-//         [self.groupNames addObject: group[@"groupName"]];
-//         [[NSOperationQueue mainQueue] addOperationWithBlock:
-//          ^{
-//              [self.tableView reloadData];
-//          }];
-//
-//     }];
+//this parse code must go somewhere else
     
     
     
-    
-    
-    
-    
+    //make protection code in case the column is null for a certain value in the relational table
     PFQuery *groupsQuery = [PFQuery queryWithClassName:@"Groups"];
-    [groupsQuery selectKeys:@[@"groupName"]];
+    //[groupsQuery selectKeys:@[@"groupName", @"groupColor"]];
     [groupsQuery findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error)
     {
+        NSLog(@"%@",error);
         for (PFObject *object in results)
         {
-            [object fetchIfNeeded:nil];
-            if ([object objectForKey:@"groupName"]) {
+            if ([object objectForKey:@"groupName"])
+            {
                 [self.groupNames addObject:[object objectForKey:@"groupName"]];
-                NSLog(@"NOS DEMOS BEM");
-            } else {
-                NSLog(@"#FOGO");
+            }
+            if ([object objectForKey:@"groupColor"])
+            {
+                PFFile *colorFile = [object objectForKey:@"groupColor"];
+                NSData *colorData = [colorFile getData];
+                UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+                [self.groupColors addObject: color];
             }
         }
         [[NSOperationQueue mainQueue] addOperationWithBlock:
@@ -96,11 +89,9 @@
          }];
     }];
     
+    //problem with coloring multiple rows
 
-//             [object fetchIfNeededInBackgroundWithBlock:^(PFObject *object, NSError *error)
-//             {
-//                 }];
-    
+
     
     
     
@@ -196,53 +187,22 @@
 //    
 //    [cell.accessoryView setBackgroundColor:[UIColor clearColor]];
 //    [cell.contentView setBackgroundColor:[UIColor clearColor]];
-//    cell.backgroundColor = [CustomUIColor darkerColorForColor:socializeGroupSpecific.groupColor];
+    //cell.backgroundColor = [CustomUIColor darkerColorForColor:self.groupColors];
+    int row = indexPath.row;
+    if (row < [self.groupColors count])
+    {
+         cell.backgroundColor = self.groupColors[indexPath.row];
+    }
+   
     
-    
+  
     
     
     
     [[cell textLabel] setText: [NSString stringWithFormat: @"%@",self.groupNames[indexPath.row]]];
-    
-    
- 
-    
-    return cell;
-    
-    
-//    
-//    
-//    // set up our query for the Book object
-//    PFQuery *groupQuery = [PFQuery queryWithClassName:@"Groups"];
-//    
-//    
-//    // configure any constraints on your query...
-//    // tell the query to fetch all of the Author objects along with the Book
-//    [groupQuery includeKey:@"usersInTheGroup"];
-//    
-//    // execute the query
-//    groupQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
-//    {
-//        if (!error)
-//        {
-//            NSLog(@"query successful");
-//        }
-//        else
-//        {
-//            NSLog(@"Error: %@ %@",error, [error userInfo]);
-//        }
-//    }
-//    
-    
-    
-    
-    
 
-    
-    
-    
-    
-    
+    return cell;
+
 }
 
 
