@@ -16,11 +16,13 @@
 
 #define alertViewDelete 1
 
+#define groupName 0
+#define groupColor 1
+
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *GroupsNavigationItem;
-@property ( nonatomic) NSMutableArray *groupNames;
-@property ( nonatomic) NSMutableArray *groupColors;
+@property ( nonatomic) NSMutableArray *groups;
 @property ( nonatomic) UIImage *GroupImage;
 @property ( nonatomic) NSInteger currentRow;
 
@@ -54,12 +56,15 @@
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(EditTable:)];
     [self.navigationItem setLeftBarButtonItem:editButton];
     
-    self.groupNames = [[NSMutableArray alloc]init];
-    self.groupColors = [[NSMutableArray alloc]init];
-    
-    
-    
+    self.groups = [[NSMutableArray alloc]init];
+    self.groups[groupName] = [[NSMutableArray alloc]init];
+    self.groups [groupColor]= [[NSMutableArray alloc]init];
 //this parse code must go somewhere else
+    // and also make a db class
+    
+    
+
+    
     
     
     
@@ -73,14 +78,18 @@
         {
             if ([object objectForKey:@"groupName"])
             {
-                [self.groupNames addObject:[object objectForKey:@"groupName"]];
+                [self.groups[groupName] addObject:[object objectForKey:@"groupName"]];
             }
             if ([object objectForKey:@"groupColor"])
             {
                 PFFile *colorFile = [object objectForKey:@"groupColor"];
                 NSData *colorData = [colorFile getData];
                 UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-                [self.groupColors addObject: color];
+                [self.groups[groupColor] addObject:color];
+            }
+            else
+            {
+                [self.groups[groupColor] addObject:[UIColor whiteColor]];
             }
         }
         [[NSOperationQueue mainQueue] addOperationWithBlock:
@@ -89,8 +98,7 @@
          }];
     }];
     
-    //problem with coloring multiple rows
-
+  //make dictionary for colors
 
     
     
@@ -163,7 +171,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.groupNames count];
+    return [self.groups[groupName] count];
 }
 
 
@@ -180,26 +188,24 @@
         cell.editingAccessoryType = YES;
     }
     
+    
 //    SocializeGroup *socializeGroup = socializeGroups[indexPath.row];
 //    SocializeGroupSpecific *socializeGroupSpecific = socializeGroupsSpecific[indexPath.row];
 //    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",socializeGroup.groupName]];
-//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//    
-//    [cell.accessoryView setBackgroundColor:[UIColor clearColor]];
-//    [cell.contentView setBackgroundColor:[UIColor clearColor]];
+
     //cell.backgroundColor = [CustomUIColor darkerColorForColor:self.groupColors];
-    int row = indexPath.row;
-    if (row < [self.groupColors count])
-    {
-         cell.backgroundColor = self.groupColors[indexPath.row];
-    }
-   
     
+    cell.backgroundColor = [UIColor whiteColor];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [cell.accessoryView setBackgroundColor:[UIColor clearColor]];
+    [cell.contentView setBackgroundColor:[UIColor clearColor]];
+
+    cell.backgroundColor = self.groups[groupColor][indexPath.row];
   
     
     
     
-    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",self.groupNames[indexPath.row]]];
+    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",self.groups[groupName][indexPath.row]]];
 
     return cell;
 
