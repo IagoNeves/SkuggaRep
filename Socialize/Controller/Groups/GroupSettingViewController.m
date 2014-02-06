@@ -55,8 +55,6 @@
     
     id groupWarning = [NSNumber numberWithInteger: self.valueNotification];
     [parseGroup setObject: groupWarning forKey:@"groupWarningRadius"];
-  
-    NSArray *usersInTheGroupArray = [[NSArray alloc]init];
     
     NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:self.colorPicker.groupColor];
     PFFile *colorFile = [PFFile fileWithData:colorData];
@@ -71,9 +69,8 @@
         [user setObject:groupUser.lastUpdateDate forKey:@"lastUpdateDate"];
         [user saveInBackground];
         
-        [usersInTheGroupArray arrayByAddingObject:user];
+        [parseGroup addObject:user forKey:@"usersInTheGroup"];
     }
-    [parseGroup setObject:usersInTheGroupArray forKey:@"usersInTheGroup"];
     
     [parseGroup saveInBackground];
 }

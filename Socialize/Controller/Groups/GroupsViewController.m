@@ -11,8 +11,9 @@
 #import "SocializeGroup.h"
 #import "MainMapViewController.h"
 #import <Parse/Parse.h>
+#import "DAOParse.h"
 
-@interface GroupsViewController ()
+@interface GroupsViewController () <DAOParseDelegate>
 
 #define alertViewDelete 1
 
@@ -23,6 +24,8 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *GroupsNavigationItem;
 @property ( nonatomic) NSMutableArray *groups;
+@property ( nonatomic) NSMutableArray *usersInTheGroup;
+
 @property ( nonatomic) UIImage *GroupImage;
 @property ( nonatomic) NSInteger currentRow;
 
@@ -56,51 +59,25 @@
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(EditTable:)];
     [self.navigationItem setLeftBarButtonItem:editButton];
     
-    self.groups = [[NSMutableArray alloc]init];
-    self.groups[groupName] = [[NSMutableArray alloc]init];
-    self.groups [groupColor]= [[NSMutableArray alloc]init];
-//this parse code must go somewhere else
-    // and also make a db class
+
+    NSString *class = @"Groups";
+    NSMutableArray *ArrayOfColumns = [[NSMutableArray alloc]init];
+    ArrayOfColumns[groupName] = @"groupName";
+    ArrayOfColumns[groupColor] = @"groupColor";
+    DAOParse *daoParse;
+    daoParse = [[DAOParse alloc]init];
+    daoParse.delegate = self;
+    [daoParse fetchAllValuesOfClass:class andColumns:ArrayOfColumns];
+    
     
     
 
     
     
     
-    
-    //make protection code in case the column is null for a certain value in the relational table
-    PFQuery *groupsQuery = [PFQuery queryWithClassName:@"Groups"];
-    //[groupsQuery selectKeys:@[@"groupName", @"groupColor"]];
-    [groupsQuery findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error)
-    {
-        NSLog(@"%@",error);
-        for (PFObject *object in results)
-        {
-            if ([object objectForKey:@"groupName"])
-            {
-                [self.groups[groupName] addObject:[object objectForKey:@"groupName"]];
-            }
-            if ([object objectForKey:@"groupColor"])
-            {
-                PFFile *colorFile = [object objectForKey:@"groupColor"];
-                NSData *colorData = [colorFile getData];
-                UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-                [self.groups[groupColor] addObject:color];
-            }
-            else
-            {
-                [self.groups[groupColor] addObject:[UIColor whiteColor]];
-            }
-        }
-        [[NSOperationQueue mainQueue] addOperationWithBlock:
-         ^{
-             [self.tableView reloadData];
-         }];
-    }];
-    
-  //make dictionary for colors
-
-    
+  //make dictionary for colors ? /??
+    //doesn't dismiss viewcontroller unless the image is loaded
+    //small gap between rows: change design
     
     
     
@@ -171,7 +148,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.groups[groupName] count];
+    if ([self.groups count])
+    {
+        return [self.groups[groupName] count];
+    }
+    else
+    {
+        return 0;
+    }
+    
 }
 
 
@@ -214,9 +199,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath NS_AVAILABLE_IOS(3_0);
 {
+
+    NSString *groupTitle = self.groups[groupName][indexPath.row];
+    NSMutableArray *ArrayOfColumns = [[NSMutableArray alloc]init];
+    ArrayOfColumns[0] = @"name";
+    DAOParse *daoParse;
+    daoParse = [[DAOParse alloc]init];
+    daoParse.delegate = self;
+    [daoParse fetchAllUsersInGroup:groupTitle andColumns:ArrayOfColumns];
+    
     self.isSpecificMap = YES;
     self.specificGroupArrayIndex = indexPath.row;
-    [self performSegueWithIdentifier:@"specificGroupSegue" sender:self];
+  // [self performSegueWithIdentifier:@"specificGroupSegue" sender:self];
     
 }
 
@@ -318,6 +312,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             [self.tableView reloadData];
         }
     }
+}
+
+-(void)hasCompletedGroupDataFetch:(NSMutableArray *)resultsArray
+{
+    self.groups = resultsArray;
+    [self.tableView reloadData];
+}
+
+-(void)hasCompletedUserDataFetch:(NSMutableArray *)resultsArray
+{
+    self.usersInTheGroup = resultsArray;
+    [self.tableView reloadData];
 }
 
 @end

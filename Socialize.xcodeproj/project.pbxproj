@@ -62,6 +62,7 @@
 		B87C4154188075A7009C1475 /* fla.png in Resources */ = {isa = PBXBuildFile; fileRef = B87C4153188075A7009C1475 /* fla.png */; };
 		B8DBCC9D189FF180003CB6D2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBCC9B189FF180003CB6D2 /* FacebookSDK.framework */; };
 		B8DBCCA018A29AE3003CB6D2 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBCC9F18A29AE3003CB6D2 /* Parse.framework */; };
+		B8DBCCA418A3EB98003CB6D2 /* DAOParse.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DBCCA318A3EB98003CB6D2 /* DAOParse.m */; };
 		B8DFB9C21816D18000FDE302 /* Chats60.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFB9C11816D18000FDE302 /* Chats60.png */; };
 		B8DFB9C41816D19000FDE302 /* Marker60.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFB9C31816D19000FDE302 /* Marker60.png */; };
 		B8DFB9C61816D1B200FDE302 /* Gear60.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFB9C51816D1B200FDE302 /* Gear60.png */; };
@@ -176,6 +177,8 @@
 		B87C4153188075A7009C1475 /* fla.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fla.png; sourceTree = "<group>"; };
 		B8DBCC9B189FF180003CB6D2 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		B8DBCC9F18A29AE3003CB6D2 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		B8DBCCA218A3EB98003CB6D2 /* DAOParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAOParse.h; sourceTree = "<group>"; };
+		B8DBCCA318A3EB98003CB6D2 /* DAOParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAOParse.m; sourceTree = "<group>"; };
 		B8DFB9C11816D18000FDE302 /* Chats60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chats60.png; sourceTree = "<group>"; };
 		B8DFB9C31816D19000FDE302 /* Marker60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Marker60.png; sourceTree = "<group>"; };
 		B8DFB9C51816D1B200FDE302 /* Gear60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gear60.png; sourceTree = "<group>"; };
@@ -292,6 +295,7 @@
 		B878620218169BC00056E726 /* Socialize */ = {
 			isa = PBXGroup;
 			children = (
+				B8DBCCA118A3EB88003CB6D2 /* DAO */,
 				B8E3B8361833FC4700C8B706 /* Store */,
 				B8DFB9DE1817E82700FDE302 /* Model */,
 				B8DFB9DD1817E82300FDE302 /* View */,
@@ -365,6 +369,15 @@
 				B8DFB9C11816D18000FDE302 /* Chats60.png */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		B8DBCCA118A3EB88003CB6D2 /* DAO */ = {
+			isa = PBXGroup;
+			children = (
+				B8DBCCA218A3EB98003CB6D2 /* DAOParse.h */,
+				B8DBCCA318A3EB98003CB6D2 /* DAOParse.m */,
+			);
+			name = DAO;
 			sourceTree = "<group>";
 		};
 		B8DFB9DD1817E82300FDE302 /* View */ = {
@@ -625,6 +638,7 @@
 				B85B5E76181E9DF800008617 /* FirstViewController.m in Sources */,
 				48D403711833B09B00C617A3 /* CustomUIImage.m in Sources */,
 				B878620918169BC00056E726 /* main.m in Sources */,
+				B8DBCCA418A3EB98003CB6D2 /* DAOParse.m in Sources */,
 				48D4035B1833AF5600C617A3 /* FacebookManager.m in Sources */,
 				48D403661833AF9900C617A3 /* GroupSettingViewController.m in Sources */,
 				48D403671833AF9900C617A3 /* GroupsViewController.m in Sources */,
