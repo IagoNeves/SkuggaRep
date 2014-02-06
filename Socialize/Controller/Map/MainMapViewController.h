@@ -30,5 +30,7 @@
 
 @property (nonatomic) NSUInteger specificGroupArrayIndex;
 
+@property (weak, nonatomic) SocializeGroup* thisGroup;
+
 @end
 

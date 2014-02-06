@@ -116,16 +116,20 @@
         
     }
     
+    //if it's coming from the GroupsViewController
     else
     {
-        SocializeGroup* thisGroup = [[Singleton singleton].allGroups objectAtIndex:self.specificGroupArrayIndex];
-        SocializeGroupSpecific* thisGroupSpecific = [[Singleton singleton].allGroupsSpecific objectAtIndex:self.specificGroupArrayIndex];
-        radiusOfSearch = thisGroup.groupWarningRadius;
+        //SocializeGroup* thisGroup = [[Singleton singleton].allGroups objectAtIndex:self.specificGroupArrayIndex];
+        //SocializeGroupSpecific* thisGroupSpecific = [[Singleton singleton].allGroupsSpecific objectAtIndex:self.specificGroupArrayIndex];
         
-        for(SocializeUser* everyUser in thisGroup.usersInTheGroup)
+        
+        
+        radiusOfSearch = self.thisGroup.groupWarningRadius;
+        
+        for(SocializeUser* everyUser in self.thisGroup.usersInTheGroup)
         {
-            everyUser.mostPreciseDrawableGroup = thisGroup;
-            everyUser.mostPreciseDrawableGroupSpecific = thisGroupSpecific;
+            everyUser.mostPreciseDrawableGroup = self.thisGroup;
+           // everyUser.mostPreciseDrawableGroupSpecific = thisGroupSpecific;
             
             bool drawIt=true;
             

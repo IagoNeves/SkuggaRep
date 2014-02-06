@@ -31,6 +31,7 @@
                  {
                      if ([object objectForKey:@"groupColor"])
                      {
+                         //this color thing is cauing the long running parse operation
                          PFFile *colorFile = [object objectForKey:@"groupColor"];
                          NSData *colorData = [colorFile getData];
                          UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];

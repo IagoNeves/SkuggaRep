@@ -23,7 +23,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *GroupsNavigationItem;
-@property ( nonatomic) NSMutableArray *groups;
+@property ( nonatomic) NSMutableArray *allGroups;
 @property ( nonatomic) NSMutableArray *usersInTheGroup;
 
 @property ( nonatomic) UIImage *GroupImage;
@@ -148,9 +148,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([self.groups count])
+    if ([self.allGroups count])
     {
-        return [self.groups[groupName] count];
+        return [self.allGroups[groupName] count];
     }
     else
     {
@@ -184,23 +184,17 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [cell.accessoryView setBackgroundColor:[UIColor clearColor]];
     [cell.contentView setBackgroundColor:[UIColor clearColor]];
-
-    cell.backgroundColor = self.groups[groupColor][indexPath.row];
-  
-    
-    
-    
-    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",self.groups[groupName][indexPath.row]]];
+    cell.backgroundColor = self.allGroups[groupColor][indexPath.row];
+    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",self.allGroups[groupName][indexPath.row]]];
 
     return cell;
-
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath NS_AVAILABLE_IOS(3_0);
 {
 
-    NSString *groupTitle = self.groups[groupName][indexPath.row];
+    NSString *groupTitle = self.allGroups[groupName][indexPath.row];
     NSMutableArray *ArrayOfColumns = [[NSMutableArray alloc]init];
     ArrayOfColumns[0] = @"name";
     DAOParse *daoParse;
@@ -210,7 +204,7 @@
     
     self.isSpecificMap = YES;
     self.specificGroupArrayIndex = indexPath.row;
-  // [self performSegueWithIdentifier:@"specificGroupSegue" sender:self];
+   [self performSegueWithIdentifier:@"specificGroupSegue" sender:self];
     
 }
 
@@ -223,10 +217,8 @@
         ((MainMapViewController *)[destinationViewController  viewControllers][0]).isSpecificMap = self.isSpecificMap;
         
         ((MainMapViewController *)[destinationViewController  viewControllers][0]).specificGroupArrayIndex = self.specificGroupArrayIndex;
-
         
-         //MainMapViewController *destinationViewController = [segue destinationViewController];
-        //destinationViewController.isSpecificMap = self.isSpecificMap;
+        ((MainMapViewController *)[destinationViewController  viewControllers][0]).thisGroup = self.allGroups;
 
     }
 }
