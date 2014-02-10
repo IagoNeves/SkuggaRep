@@ -8,6 +8,8 @@
 
 #import "DAOParse.h"
 #import <Parse/Parse.h>
+#import "SocializeGroup.h"
+#import "SocializeUser.h"
 
 @implementation DAOParse
 
@@ -54,11 +56,45 @@
             }
             i++;
          }
-         [self.delegate hasCompletedGroupDataFetch:ResultsArray];
+         [self.delegate hasCompletedGroupColumnsDataFetch:ResultsArray];
      }];
 }
 
-- (void)fetchAllUsersInGroup: (NSString *)groupName andColumns: (NSMutableArray *)arrayWithColumns
+//- (void)fetchAllUsersInGroup: (NSString *)groupName andColumns: (NSMutableArray *)arrayWithColumns
+//{
+//    NSMutableArray *ResultsArray = [[NSMutableArray alloc]init];
+//    PFQuery *groupQuery = [PFQuery queryWithClassName:@"Groups"];
+//    [groupQuery whereKey:@"groupName" equalTo:groupName];
+//    
+//    [groupQuery findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error)
+//     {
+//         NSMutableArray *usersInTheGroup = [[NSMutableArray alloc]init];
+//         NSMutableArray *objectIDsArray = [[NSMutableArray alloc]init];
+//
+//         usersInTheGroup = [results[0] objectForKey:@"usersInTheGroup"];
+//         int i=0;
+//         for (PFObject *user in usersInTheGroup)
+//         {
+//             ResultsArray[i] = [[NSMutableArray alloc]init];
+//             objectIDsArray[i] = user.objectId;
+//             
+//             PFQuery *userQuery = [PFQuery queryWithClassName:@"User"];
+//             [userQuery getObjectInBackgroundWithId:[NSString stringWithFormat:@"%@",objectIDsArray[i]] block:^(PFObject *user, NSError *error)
+//              {
+//                  int j=0;
+//                  for (NSString *columnKey in arrayWithColumns)
+//                  {
+//                      ResultsArray[i][j] = [user objectForKey:[NSString stringWithFormat:@"%@",columnKey]];
+//                       j++;
+//                  }
+//                  [self.delegate hasCompletedUserDataFetch:ResultsArray];
+//              }];
+//             i++;
+//         }
+//    }];
+//}
+
+- (void)fetchAllUsersInGroup: (NSString *)groupName
 {
     NSMutableArray *ResultsArray = [[NSMutableArray alloc]init];
     PFQuery *groupQuery = [PFQuery queryWithClassName:@"Groups"];
@@ -68,9 +104,10 @@
      {
          NSMutableArray *usersInTheGroup = [[NSMutableArray alloc]init];
          NSMutableArray *objectIDsArray = [[NSMutableArray alloc]init];
-
+         
          usersInTheGroup = [results[0] objectForKey:@"usersInTheGroup"];
          int i=0;
+         NSLog(@"Teste para %d usuarios", [usersInTheGroup count]);
          for (PFObject *user in usersInTheGroup)
          {
              ResultsArray[i] = [[NSMutableArray alloc]init];
@@ -79,20 +116,77 @@
              PFQuery *userQuery = [PFQuery queryWithClassName:@"User"];
              [userQuery getObjectInBackgroundWithId:[NSString stringWithFormat:@"%@",objectIDsArray[i]] block:^(PFObject *user, NSError *error)
               {
-                  int j=0;
-                  for (NSString *columnKey in arrayWithColumns)
+                  SocializeUser *socializeUser = [[SocializeUser alloc]init];
+                  socializeUser = [socializeUser initWithName:[user objectForKey:@"name"] photo:[user objectForKey:@"photo"] andIdentifier:[user objectForKey:@"identificator"]];
+                  
+                  ResultsArray[i] = socializeUser;
+                  int j = [usersInTheGroup count];
+                  int completedAllBlocks=0;
+                  while (j--)
                   {
-                      ResultsArray[i][j] = [user objectForKey:[NSString stringWithFormat:@"%@",columnKey]];
-                       j++;
+                      //must check if inside resultsarray[j] is something other than 0 objects
+                      if ([ResultsArray[j] object])
+                      {
+                          completedAllBlocks++;
+                      }
                   }
-                  [self.delegate hasCompletedUserDataFetch:ResultsArray];
+                  if (completedAllBlocks == [usersInTheGroup count])
+                  {
+                      [self.delegate hasCompletedGroupUsersDataFetch:ResultsArray];
+                  }
               }];
              i++;
          }
+     }];
+}
+
+- (void)fetchGroupWithName: (NSString *)groupName
+{
+    PFQuery *groupQuery = [PFQuery queryWithClassName:@"Groups"];
+    [groupQuery whereKey:@"groupName" equalTo:groupName];
+    
+    [groupQuery findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error)
+     {
+         NSMutableArray *usersInTheGroup = [[NSMutableArray alloc]init];
+         NSMutableArray *objectIDsArray = [[NSMutableArray alloc]init];
+         usersInTheGroup = [results[0] objectForKey:@"usersInTheGroup"];
+         int i=0;
+         for (PFObject *user in usersInTheGroup)
+         {
+             usersInTheGroup[i] = [[NSMutableArray alloc]init];
+             objectIDsArray[i] = user.objectId;
+             
+             PFQuery *userQuery = [PFQuery queryWithClassName:@"User"];
+             [userQuery getObjectInBackgroundWithId:[NSString stringWithFormat:@"%@",objectIDsArray[i]] block:^(PFObject *user, NSError *error)
+              {
+                  SocializeUser *socializeUser = [[SocializeUser alloc]init];
+                  socializeUser = [socializeUser initWithName:[user objectForKey:@"name"] photo:[user objectForKey:@"photo"] andIdentifier:[user objectForKey:@"identificator"]];
+                  
+                  usersInTheGroup[i] = socializeUser;
+              }];
+             i++;
+         }
+         
+         PFObject *ResultsGroup = results[0];
+         NSString *groupObjectID = [[NSString alloc]init];
+         groupObjectID = ResultsGroup.objectId;
+         
+         PFQuery *groupInfoQuery = [PFQuery queryWithClassName:@"Groups"];
+         if (usersInTheGroup[0])
+         {
+             [groupInfoQuery getObjectInBackgroundWithId:[NSString stringWithFormat:@"%@",groupObjectID ]block:^(PFObject *group, NSError *error)
+              {
+                  SocializeGroup *socializeGroup;
+                  //groupAdmin is getting a random member (to change)
+                  socializeGroup = [socializeGroup initGroupWithName:[group objectForKey:@"groupName"] precisionRadius:[[group objectForKey:@"groupPrecisionRadius"] intValue] warningRadius:[[group objectForKey:@"groupWarningRadius"] intValue]  andGroupAdmin:usersInTheGroup[0] andMembers:usersInTheGroup];
+                  [self.delegate hasCompletedGroupDataFetch:socializeGroup];
+              }];
+         }
+         
     }];
 }
 
-    
+
 
 @end
 

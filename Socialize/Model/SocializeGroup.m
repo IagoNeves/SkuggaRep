@@ -12,7 +12,7 @@
 
 @implementation SocializeGroup
 
-- (id) initGroupWithName: (NSString*) theName precisionRadius: (NSUInteger) theRadius warningRadius: (NSUInteger) theWarningRadius andGroupAdmin: (SocializeUser *) groupAdmin andMembers: (NSMutableArray *) groupMembersArray
+- (SocializeGroup *) initGroupWithName: (NSString*) theName precisionRadius: (NSUInteger) theRadius warningRadius: (NSUInteger) theWarningRadius andGroupAdmin: (SocializeUser *) groupAdmin andMembers: (NSMutableArray *) groupMembersArray
 {
     self=[super init];
     if(self)
@@ -20,22 +20,8 @@
         self.groupName = [theName copy];
         self.groupPrecisionRadius = theRadius;
         self.groupWarningRadius = theWarningRadius;
-        self.usersInTheGroup = [NSMutableArray array];
+        self.usersInTheGroup = groupMembersArray;
         self.groupAdmin = groupAdmin;
-        
-        for(SocializeUser* eachUser in groupMembersArray)
-        {
-            [self addUserToTheGroup:eachUser];
-            [eachUser.groupsInWhichParticipates  addObject:self];
-            
-            NSArray * sortedArray = [eachUser.groupsInWhichParticipates sortedArrayUsingFunction:customSort context:NULL];
-            
-            [eachUser.groupsInWhichParticipates removeAllObjects];
-            eachUser.groupsInWhichParticipates = [sortedArray mutableCopy];
-        }
-        
-         [[Singleton singleton].allGroups addObject:self];
-         [[Singleton singleton].groupsToBeShowOnMap addObject:self];
     }
     return self;
 }

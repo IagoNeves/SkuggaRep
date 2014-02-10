@@ -7,12 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Parse/Parse.h>
+#import "SocializeGroup.h"
 
 @protocol DAOParseDelegate
 
 @optional
-- (void)hasCompletedGroupDataFetch:(NSMutableArray *)resultsArray;
-- (void)hasCompletedUserDataFetch:(NSMutableArray *)resultsArray;
+- (void)hasCompletedGroupColumnsDataFetch:(NSMutableArray *)resultsArray;
+- (void)hasCompletedGroupUsersDataFetch:(NSMutableArray *)resultsArray;
+- (void)hasCompletedGroupDataFetch:(SocializeGroup *)group;
+
 
 @end
 
@@ -21,7 +25,9 @@
 
 - (void)fetchAllValuesOfClass: (NSString *)Class andColumns: (NSMutableArray *)arrayWithColumns;
 
-- (void)fetchAllUsersInGroup: (NSString *)groupName andColumns: (NSMutableArray *)arrayWithColumns;
+- (void)fetchAllUsersInGroup: (NSString *)groupName;
+
+- (void)fetchGroupWithName: (NSString *)groupName;
 
 @property (nonatomic, assign) id<DAOParseDelegate> delegate;
 

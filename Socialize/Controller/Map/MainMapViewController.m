@@ -11,11 +11,13 @@
 #import "MainMapViewController.h"
 #import "SocializeGroup.h"
 #import "GroupInfoViewController.h"
+#import <Parse/Parse.h>
+#import "DAOParse.h"
 
 
 #define METERS_PER_MILE 1609.344
 
-@interface MainMapViewController ()
+@interface MainMapViewController () <DAOParseDelegate>
 
 {
     NSUInteger radiusOfSearch;
@@ -31,6 +33,11 @@
 - (IBAction)back:(id)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *infoButton;
 @property (weak, nonatomic) SocializeGroup* currentUserAnnotationGroup;
+
+@property ( nonatomic) SocializeGroup *thisGroup;
+
+
+
 
 
 @end
@@ -298,6 +305,19 @@
     
     usersAlreadyDrawn = [NSMutableArray array];
     
+    if (self.isSpecificMap)
+    {
+        DAOParse *daoParse;
+        daoParse = [[DAOParse alloc]init];
+        daoParse.delegate = self;
+        //[daoParse fetchGroupWithName:self.groupName];
+    }
+   
+}
+
+-(void)hasCompletedGroupDataFetch:(SocializeGroup *)group
+{
+    self.thisGroup = group;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -315,8 +335,7 @@
         
         if (self.isSpecificMap==YES)
         {
-            SocializeGroup* thisGroup = [[Singleton singleton].allGroups objectAtIndex:self.specificGroupArrayIndex]; //problema
-            self.navigationItem.title=[NSString stringWithFormat: @"%@", [thisGroup groupName]];
+            self.navigationItem.title=[NSString stringWithFormat: @"%@", self.thisGroup.groupName];
             //[self.navigationItem setHidesBackButton:NO animated:YES];
             UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
             self.navigationItem.leftBarButtonItem = backButton;

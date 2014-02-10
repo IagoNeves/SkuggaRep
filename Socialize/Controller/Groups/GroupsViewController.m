@@ -17,8 +17,8 @@
 
 #define alertViewDelete 1
 
-#define groupName 0
-#define groupColor 1
+#define groupNameEnum 0
+#define groupColorEnum 1
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
@@ -33,6 +33,7 @@
 
 @property(strong,nonatomic) UIAlertView* popUpWindowDelete;
 
+@property (nonatomic) NSString *specificGroupName;
 
 
 @property ( nonatomic) NSInteger counterWasBetMade;
@@ -62,8 +63,8 @@
 
     NSString *class = @"Groups";
     NSMutableArray *ArrayOfColumns = [[NSMutableArray alloc]init];
-    ArrayOfColumns[groupName] = @"groupName";
-    ArrayOfColumns[groupColor] = @"groupColor";
+    ArrayOfColumns[groupNameEnum] = @"groupName";
+    ArrayOfColumns[groupColorEnum] = @"groupColor";
     DAOParse *daoParse;
     daoParse = [[DAOParse alloc]init];
     daoParse.delegate = self;
@@ -150,7 +151,7 @@
 {
     if ([self.allGroups count])
     {
-        return [self.allGroups[groupName] count];
+        return [self.allGroups[groupNameEnum] count];
     }
     else
     {
@@ -184,8 +185,8 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [cell.accessoryView setBackgroundColor:[UIColor clearColor]];
     [cell.contentView setBackgroundColor:[UIColor clearColor]];
-    cell.backgroundColor = self.allGroups[groupColor][indexPath.row];
-    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",self.allGroups[groupName][indexPath.row]]];
+    cell.backgroundColor = self.allGroups[groupColorEnum][indexPath.row];
+    [[cell textLabel] setText: [NSString stringWithFormat: @"%@",self.allGroups[groupNameEnum][indexPath.row]]];
 
     return cell;
 }
@@ -194,16 +195,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath NS_AVAILABLE_IOS(3_0);
 {
 
-    NSString *groupTitle = self.allGroups[groupName][indexPath.row];
+    NSString *groupTitle = self.allGroups[groupNameEnum][indexPath.row];
     NSMutableArray *ArrayOfColumns = [[NSMutableArray alloc]init];
     ArrayOfColumns[0] = @"name";
     DAOParse *daoParse;
     daoParse = [[DAOParse alloc]init];
     daoParse.delegate = self;
-    [daoParse fetchAllUsersInGroup:groupTitle andColumns:ArrayOfColumns];
+    [daoParse fetchAllUsersInGroup:groupTitle];
     
     self.isSpecificMap = YES;
     self.specificGroupArrayIndex = indexPath.row;
+    self.specificGroupName = self.allGroups[groupNameEnum][indexPath.row];
+    
+  
+
    [self performSegueWithIdentifier:@"specificGroupSegue" sender:self];
     
 }
@@ -218,7 +223,7 @@
         
         ((MainMapViewController *)[destinationViewController  viewControllers][0]).specificGroupArrayIndex = self.specificGroupArrayIndex;
         
-        ((MainMapViewController *)[destinationViewController  viewControllers][0]).thisGroup = self.allGroups;
+        ((MainMapViewController *)[destinationViewController  viewControllers][0]).groupName = self.specificGroupName;
 
     }
 }
@@ -306,16 +311,17 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     }
 }
 
--(void)hasCompletedGroupDataFetch:(NSMutableArray *)resultsArray
+-(void)hasCompletedGroupColumnsDataFetch:(NSMutableArray *)resultsArray
 {
-    self.groups = resultsArray;
+    self.allGroups = resultsArray;
     [self.tableView reloadData];
 }
 
--(void)hasCompletedUserDataFetch:(NSMutableArray *)resultsArray
+-(void)hasCompletedUGroupUsersDataFetch:(NSMutableArray *)resultsArray
 {
     self.usersInTheGroup = resultsArray;
     [self.tableView reloadData];
 }
+
 
 @end

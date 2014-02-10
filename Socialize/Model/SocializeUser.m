@@ -10,7 +10,7 @@
 
 @implementation SocializeUser
 
-- (id) initWithName: (NSMutableString*) theName photo: (NSMutableString*) thePhoto andIdentifier: (NSMutableString*) theIdentificator
+- (SocializeUser *) initWithName: (NSMutableString*) theName photo: (NSMutableString*) thePhoto andIdentifier: (NSMutableString*) theIdentificator
 {
     if(self==nil)
         self = [super init];
