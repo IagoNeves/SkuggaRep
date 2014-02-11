@@ -108,34 +108,12 @@
 }
 
 
-//- (IBAction)editGroups:(id)sender
-//{
-//    [self.navigationItem.leftBarButtonItem setTitle:@"Edit"];
-//    
-//     [self.tableView setEditing:YES animated:YES];
-//    
-//    
-//    
-//    //[self.botaoAdd setEnabled:YES];
-//    //[self.botaoRelatorio setEnabled:YES];
-//    //[self.botaoVenda setEnabled:YES];
-//}
 
-
-- (IBAction)newGroup:(id)sender {
+- (IBAction)newGroup:(id)sender
+{
     [self performSegueWithIdentifier:@"newGroupSegue" sender:self];
     
 }
-
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:UITableViewStyleGrouped];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
-
 
 
 
@@ -195,13 +173,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath NS_AVAILABLE_IOS(3_0);
 {
 
-    NSString *groupTitle = self.allGroups[groupNameEnum][indexPath.row];
-    NSMutableArray *ArrayOfColumns = [[NSMutableArray alloc]init];
-    ArrayOfColumns[0] = @"name";
-    DAOParse *daoParse;
-    daoParse = [[DAOParse alloc]init];
-    daoParse.delegate = self;
-    [daoParse fetchAllUsersInGroup:groupTitle];
+//    NSString *groupTitle = self.allGroups[groupNameEnum][indexPath.row];
+//    NSMutableArray *ArrayOfColumns = [[NSMutableArray alloc]init];
+//    ArrayOfColumns[0] = @"name";
+//    DAOParse *daoParse;
+//    daoParse = [[DAOParse alloc]init];
+//    daoParse.delegate = self;
+//    [daoParse fetchAllUsersInGroup:groupTitle];
     
     self.isSpecificMap = YES;
     self.specificGroupArrayIndex = indexPath.row;
@@ -317,11 +295,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     [self.tableView reloadData];
 }
 
--(void)hasCompletedUGroupUsersDataFetch:(NSMutableArray *)resultsArray
-{
-    self.usersInTheGroup = resultsArray;
-    [self.tableView reloadData];
-}
+//-(void)hasCompletedGroupUsersDataFetch:(NSMutableArray *)resultsArray
+//{
+//    self.usersInTheGroup = resultsArray;
+//    [self.tableView reloadData];
+//}
 
 
 @end

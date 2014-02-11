@@ -13,34 +13,35 @@
 #import "GroupInfoViewController.h"
 #import <Parse/Parse.h>
 #import "DAOParse.h"
+#import "Singleton.h"
 
 
 #define METERS_PER_MILE 1609.344
 
 @interface MainMapViewController () <DAOParseDelegate>
 
-{
-    NSUInteger radiusOfSearch;
-    NSMutableArray* usersAlreadyDrawn;
-}
+
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *currentLocation;
 @property (nonatomic, strong) UIAlertView* alert;
 @property (nonatomic, strong) FacebookManager *facebookManager;
 @property (nonatomic, strong) UIColor* currentColor;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *backButton;
-- (IBAction)back:(id)sender;
+@property (nonatomic) NSUInteger radiusOfSearch;
+@property (nonatomic, strong) NSMutableArray* usersAlreadyDrawn;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *infoButton;
 @property (weak, nonatomic) SocializeGroup* currentUserAnnotationGroup;
 
-@property ( nonatomic) SocializeGroup *thisGroup;
-
+@property (nonatomic) SocializeGroup *thisGroup;
+@property (nonatomic, strong) NSMutableArray* groupMembers;
+@property (weak, nonatomic) IBOutlet UIButton *refreshButton;
 
 
 
 
 @end
+
+//INVITES
 
 //pra fazer: gravar o zoom do mapa para quando o cara for para outra tela e voltar, o zoom continuar no mesmo lugar
 //do jeito que esta, se view do tap bar eh ok, se vier do
@@ -53,6 +54,59 @@
     [self dismissViewControllerAnimated:YES completion: nil]; //isso volta para o ultimo view, pode ser modal
     //[self.navigationController popViewControllerAnimated:YES]; //nao funciona para modal, funciona automaticamente para push
 }
+
+- (IBAction)refresh:(id)sender
+{
+    for (SocializeUser* user in self.groupMembers)
+    {
+        
+    }
+}
+
+- (CLLocationManager *)locationManager
+{
+    if (_locationManager != nil)
+    {
+        return _locationManager;
+    }
+    
+    _locationManager = [[CLLocationManager alloc] init];
+    [_locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+    [_locationManager setDelegate:self];
+    [_locationManager setPurpose:@"Your current location is used to demonstrate PFGeoPoint and Geo Queries."];
+    
+    return _locationManager;
+}
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [[self locationManager] startUpdatingLocation];
+    
+    self.mapView.delegate = self;
+    self.mapView.showsUserLocation=YES;
+    self.goToGroupView = NO;
+    
+    self.facebookManager = [FacebookManagerStored sharedInstance];
+    //[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(performLogin) userInfo:nil repeats:NO];
+    
+    self.usersAlreadyDrawn = [NSMutableArray array];
+    
+    if (self.isSpecificMap)
+    {
+        DAOParse *daoParse;
+        daoParse = [[DAOParse alloc]init];
+        daoParse.delegate = self;
+        [daoParse fetchGroupWithName:self.groupName];
+        [daoParse fetchAllUsersInGroup:self.groupName];
+    }
+    
+}
+
+
+
 - (void) updateMapAndZoomRegion: (bool) calledByViewDidAppear
 {
     [self.mapView removeAnnotations:self.mapView.annotations];
@@ -62,24 +116,24 @@
     
     if(!calledByViewDidAppear) //por alguma condicao para que o zoom nao se altere toda vez q muda de pagina
     {
-        radiusOfSearch=500;
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([Singleton singleton].userCoordinate, radiusOfSearch*3, radiusOfSearch*3);
+        self.radiusOfSearch=500;
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([Singleton singleton].userCoordinate, self.radiusOfSearch*3, self.radiusOfSearch*3);
         [self.mapView setRegion:region animated: YES];
     }
     
-    [usersAlreadyDrawn removeAllObjects];
+    [self.usersAlreadyDrawn removeAllObjects];
     
     if(!self.isSpecificMap)
     {
         for(SocializeGroup* everyGroup in [Singleton singleton].groupsToBeShowOnMap)
         {
-            radiusOfSearch = everyGroup.groupWarningRadius;
+            self.radiusOfSearch = everyGroup.groupWarningRadius;
             for(SocializeUser* everyUser in everyGroup.usersInTheGroup)
             {
                 everyUser.mostPreciseDrawableGroup = everyGroup;
                 bool drawIt=true;
                 
-                for(SocializeUser* everyUserAlreadyDrawn in usersAlreadyDrawn)
+                for(SocializeUser* everyUserAlreadyDrawn in self.usersAlreadyDrawn)
                 {
                     if([everyUserAlreadyDrawn.identificator isEqualToString:everyUser.identificator])
                     {
@@ -116,7 +170,7 @@
                     }
                     
                     [self initializeAndDrawEachFriendInTheMap:everyUser];
-                    [usersAlreadyDrawn addObject:everyUser];
+                    [self.usersAlreadyDrawn addObject:everyUser];
                 }
             }
         }
@@ -128,19 +182,15 @@
     {
         //SocializeGroup* thisGroup = [[Singleton singleton].allGroups objectAtIndex:self.specificGroupArrayIndex];
         //SocializeGroupSpecific* thisGroupSpecific = [[Singleton singleton].allGroupsSpecific objectAtIndex:self.specificGroupArrayIndex];
-        
-        
-        
-        radiusOfSearch = self.thisGroup.groupWarningRadius;
+        self.radiusOfSearch = self.thisGroup.groupWarningRadius;
         
         for(SocializeUser* everyUser in self.thisGroup.usersInTheGroup)
         {
             everyUser.mostPreciseDrawableGroup = self.thisGroup;
-           // everyUser.mostPreciseDrawableGroupSpecific = thisGroupSpecific;
             
+            //check to see if you should draw the user
             bool drawIt=true;
-            
-            for(SocializeUser* everyUserAlreadyDrawn in usersAlreadyDrawn)
+            for(SocializeUser* everyUserAlreadyDrawn in self.usersAlreadyDrawn)
             {
                 if([everyUserAlreadyDrawn.identificator isEqualToString:everyUser.identificator])
                 {
@@ -151,7 +201,7 @@
             
             if(drawIt)
             {
-                if(everyUser.isAnUpdateToCoordinateAvailable==true)
+                if(everyUser.isAnUpdateToCoordinateAvailable)
                 {
                     everyUser.isAnUpdateToCoordinateAvailable=false;
                     
@@ -172,10 +222,11 @@
                     }
                     
                     [everyUser updateCoordinate:CLLocationCoordinate2DMake([Singleton singleton].userCoordinate.latitude + latError*isItNegativeForLatitude, [Singleton singleton].userCoordinate.longitude + lonError*isItNegativeForLongitude) andCoordinateDate:[NSDate date]];
+                    //[everyUser updateCoordinate:CLLocationCoordinate2DMake andCoordinateDate:[NSDate date]]
                 }
                 
                 [self initializeAndDrawEachFriendInTheMap:everyUser];
-                [usersAlreadyDrawn addObject:everyUser];
+                [self.usersAlreadyDrawn addObject:everyUser];
             }
         }
         
@@ -194,7 +245,7 @@
 {
     MainMapViewAnnotation* annotation = [[MainMapViewAnnotation alloc] initWithCorrespondingUser:thisFriend];
     
-    if(MKMetersBetweenMapPoints(MKMapPointForCoordinate([Singleton singleton].userCoordinate), MKMapPointForCoordinate(annotation.correspondingUser.coordinate)) < radiusOfSearch)
+    if(MKMetersBetweenMapPoints(MKMapPointForCoordinate([Singleton singleton].userCoordinate), MKMapPointForCoordinate(annotation.correspondingUser.coordinate)) < self.radiusOfSearch)
     {
         if(annotation.inRange == false)
         {
@@ -293,31 +344,14 @@
 }
 
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.mapView.delegate = self;
-    self.mapView.showsUserLocation=YES;
-    self.goToGroupView = NO;
-    
-    self.facebookManager = [FacebookManagerStored sharedInstance];
-    //[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(performLogin) userInfo:nil repeats:NO];
-    
-    usersAlreadyDrawn = [NSMutableArray array];
-    
-    if (self.isSpecificMap)
-    {
-        DAOParse *daoParse;
-        daoParse = [[DAOParse alloc]init];
-        daoParse.delegate = self;
-        //[daoParse fetchGroupWithName:self.groupName];
-    }
-   
-}
-
 -(void)hasCompletedGroupDataFetch:(SocializeGroup *)group
 {
     self.thisGroup = group;
+}
+
+-(void)hasCompletedGroupUsersDataFetch:(NSMutableArray *)resultsArray
+{
+    self.groupMembers = resultsArray;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -335,7 +369,7 @@
         
         if (self.isSpecificMap==YES)
         {
-            self.navigationItem.title=[NSString stringWithFormat: @"%@", self.thisGroup.groupName];
+            self.navigationItem.title=[NSString stringWithFormat: @"%@", self.groupName];
             //[self.navigationItem setHidesBackButton:NO animated:YES];
             UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(back:)];
             self.navigationItem.leftBarButtonItem = backButton;

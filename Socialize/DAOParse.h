@@ -29,6 +29,8 @@
 
 - (void)fetchGroupWithName: (NSString *)groupName;
 
+- (void)saveGroup: (NSString *)groupName withUsers: (NSMutableArray *)groupUsers warningRadius:(NSUInteger)groupWarningRadius precisionRadius: (NSUInteger)groupPrecisionRadius andColor: (UIColor *) groupColor;
+
 @property (nonatomic, assign) id<DAOParseDelegate> delegate;
 
 @end

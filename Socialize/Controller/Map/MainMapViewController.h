@@ -12,7 +12,7 @@
 #import "MainMapViewAnnotation.h"
 #import "SocializeUser.h"
 #import "SocializeGroup.h"
-#import "Singleton.h"
+//#import "Singleton.h"
 #import "FacebookManagerStored.h"
 #import "SCLoginViewController.h"
 #import "AppDelegate.h"

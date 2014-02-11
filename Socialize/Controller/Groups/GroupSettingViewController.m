@@ -10,6 +10,7 @@
 #import "SocializeUser.h"
 #import "SocializeGroupSpecific.h"
 #import <Parse/Parse.h>
+#import "DAOParse.h"
 
 //Se voce colocar Proximity Notification como "x" ele está salvando como "x-1". "Iago"
 
@@ -36,43 +37,42 @@
 - (IBAction)done:(id)sender
 {
     
-    SocializeGroup* thisGroup = [[SocializeGroup alloc]initGroupWithName:self.groupTitle  precisionRadius:self.valuePrecision  warningRadius:self.valueNotification  andGroupAdmin:self.groupAdmin andMembers:self.groupUsers];
-    
-    SocializeGroupSpecific* thisGroupSpecific = [[SocializeGroupSpecific alloc]initGroupWithColor:self.colorPicker.groupColor isShownOnMap:self.addCurrentGroupToMainMap];
-    
         
     UINavigationController *navController = self.navigationController;
     [navController popToRootViewControllerAnimated:YES];
     
     
-    //Below is code for Parse:
-    PFObject *parseGroup = [PFObject objectWithClassName:@"Groups"];
+    DAOParse *daoParse = [[DAOParse alloc]init];
+    [daoParse saveGroup:self.groupTitle withUsers:self.groupUsers warningRadius:self.valueNotification precisionRadius:self.valuePrecision andColor:self.colorPicker.groupColor];
     
-    [parseGroup setObject:self.groupTitle forKey:@"groupName"];
-    
-    id groupPrecision = [NSNumber numberWithInteger: self.valuePrecision];
-    [parseGroup setObject: groupPrecision forKey:@"groupPrecisionRadius"];
-    
-    id groupWarning = [NSNumber numberWithInteger: self.valueNotification];
-    [parseGroup setObject: groupWarning forKey:@"groupWarningRadius"];
-    
-    NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:self.colorPicker.groupColor];
-    PFFile *colorFile = [PFFile fileWithData:colorData];
-    [parseGroup setObject:colorFile forKey:@"groupColor"];
-    
-    for (SocializeUser *groupUser in  self.groupUsers)
-    {
-        PFObject *user = [PFObject objectWithClassName:@"User"];
-        [user setObject:groupUser.name forKey:@"name"];
-        [user setObject:groupUser.photo forKey:@"photo"];
-        [user setObject:groupUser.identificator forKey:@"identificator"];
-        [user setObject:groupUser.lastUpdateDate forKey:@"lastUpdateDate"];
-        [user saveInBackground];
-        
-        [parseGroup addObject:user forKey:@"usersInTheGroup"];
-    }
-    
-    [parseGroup saveInBackground];
+//    //Below is code for Parse:
+//    PFObject *parseGroup = [PFObject objectWithClassName:@"Groups"];
+//    
+//    [parseGroup setObject:self.groupTitle forKey:@"groupName"];
+//    
+//    id groupPrecision = [NSNumber numberWithInteger: self.valuePrecision];
+//    [parseGroup setObject: groupPrecision forKey:@"groupPrecisionRadius"];
+//    
+//    id groupWarning = [NSNumber numberWithInteger: self.valueNotification];
+//    [parseGroup setObject: groupWarning forKey:@"groupWarningRadius"];
+//    
+//    NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:self.colorPicker.groupColor];
+//    PFFile *colorFile = [PFFile fileWithData:colorData];
+//    [parseGroup setObject:colorFile forKey:@"groupColor"];
+//    
+//    for (SocializeUser *groupUser in  self.groupUsers)
+//    {
+//        PFObject *user = [PFObject objectWithClassName:@"User"];
+//        [user setObject:groupUser.name forKey:@"name"];
+//        [user setObject:groupUser.photo forKey:@"photo"];
+//        [user setObject:groupUser.identificator forKey:@"identificator"];
+//        [user setObject:groupUser.lastUpdateDate forKey:@"lastUpdateDate"];
+//        [user saveInBackground];
+//        
+//        [parseGroup addObject:user forKey:@"usersInTheGroup"];
+//    }
+//    
+//    [parseGroup saveInBackground];
 }
 
 

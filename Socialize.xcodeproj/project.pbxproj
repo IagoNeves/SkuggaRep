@@ -63,6 +63,8 @@
 		B8DBCC9D189FF180003CB6D2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBCC9B189FF180003CB6D2 /* FacebookSDK.framework */; };
 		B8DBCCA018A29AE3003CB6D2 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DBCC9F18A29AE3003CB6D2 /* Parse.framework */; };
 		B8DBCCA418A3EB98003CB6D2 /* DAOParse.m in Sources */ = {isa = PBXBuildFile; fileRef = B8DBCCA318A3EB98003CB6D2 /* DAOParse.m */; };
+		B8DBCCAA18AAA510003CB6D2 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DBCCA918AAA510003CB6D2 /* refresh.png */; };
+		B8DBCCAC18AAA5A2003CB6D2 /* refreshbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DBCCAB18AAA5A2003CB6D2 /* refreshbutton.png */; };
 		B8DFB9C21816D18000FDE302 /* Chats60.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFB9C11816D18000FDE302 /* Chats60.png */; };
 		B8DFB9C41816D19000FDE302 /* Marker60.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFB9C31816D19000FDE302 /* Marker60.png */; };
 		B8DFB9C61816D1B200FDE302 /* Gear60.png in Resources */ = {isa = PBXBuildFile; fileRef = B8DFB9C51816D1B200FDE302 /* Gear60.png */; };
@@ -179,6 +181,8 @@
 		B8DBCC9F18A29AE3003CB6D2 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		B8DBCCA218A3EB98003CB6D2 /* DAOParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAOParse.h; sourceTree = "<group>"; };
 		B8DBCCA318A3EB98003CB6D2 /* DAOParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAOParse.m; sourceTree = "<group>"; };
+		B8DBCCA918AAA510003CB6D2 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
+		B8DBCCAB18AAA5A2003CB6D2 /* refreshbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refreshbutton.png; sourceTree = "<group>"; };
 		B8DFB9C11816D18000FDE302 /* Chats60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chats60.png; sourceTree = "<group>"; };
 		B8DFB9C31816D19000FDE302 /* Marker60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Marker60.png; sourceTree = "<group>"; };
 		B8DFB9C51816D1B200FDE302 /* Gear60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gear60.png; sourceTree = "<group>"; };
@@ -207,6 +211,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8E3B84B1835323700C8B706 /* CoreLocation.framework in Frameworks */,
 				B87861FD18169BC00056E726 /* Foundation.framework in Frameworks */,
 				B87B3B2918354DD8008A1DA2 /* AVFoundation.framework in Frameworks */,
 				B8E3B8571835326500C8B706 /* SystemConfiguration.framework in Frameworks */,
@@ -216,7 +221,6 @@
 				B8DBCCA018A29AE3003CB6D2 /* Parse.framework in Frameworks */,
 				B8E3B84F1835324600C8B706 /* MobileCoreServices.framework in Frameworks */,
 				B8E3B84D1835323F00C8B706 /* libz.1.1.3.dylib in Frameworks */,
-				B8E3B84B1835323700C8B706 /* CoreLocation.framework in Frameworks */,
 				B87861FF18169BC00056E726 /* CoreGraphics.framework in Frameworks */,
 				B8E3B8491835322800C8B706 /* CFNetwork.framework in Frameworks */,
 				B8DBCC9D189FF180003CB6D2 /* FacebookSDK.framework in Frameworks */,
@@ -343,6 +347,8 @@
 		B87862391816AB460056E726 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B8DBCCAB18AAA5A2003CB6D2 /* refreshbutton.png */,
+				B8DBCCA918AAA510003CB6D2 /* refresh.png */,
 				17E2BD7D18834CE0009C42A6 /* placeholder.png */,
 				B87C4153188075A7009C1475 /* fla.png */,
 				B87C41511880751E009C1475 /* a.png */,
@@ -586,6 +592,7 @@
 				B8E3B8421834F80100C8B706 /* checkbox_marked.png in Resources */,
 				48CD70D8182BD26B00F31E35 /* circle-grey-top.png in Resources */,
 				B87C4154188075A7009C1475 /* fla.png in Resources */,
+				B8DBCCAA18AAA510003CB6D2 /* refresh.png in Resources */,
 				48CD70CB182BB50400F31E35 /* Azul.png in Resources */,
 				B878620718169BC00056E726 /* InfoPlist.strings in Resources */,
 				B8DFB9D41817E10D00FDE302 /* Gear30.png in Resources */,
@@ -598,6 +605,7 @@
 				B8DFB9D21817E0FC00FDE302 /* Marker30.png in Resources */,
 				B801B4AF182D33D00089675D /* eldoradoLocation.gpx in Resources */,
 				B87C4145188063F2009C1475 /* colorwheel1.png in Resources */,
+				B8DBCCAC18AAA5A2003CB6D2 /* refreshbutton.png in Resources */,
 				B8DFB9CE1817DBA700FDE302 /* Man60.png in Resources */,
 				B8DFB9C41816D19000FDE302 /* Marker60.png in Resources */,
 			);
