@@ -31,6 +31,10 @@
 
 - (void)saveGroup: (NSString *)groupName withUsers: (NSMutableArray *)groupUsers warningRadius:(NSUInteger)groupWarningRadius precisionRadius: (NSUInteger)groupPrecisionRadius andColor: (UIColor *) groupColor;
 
+- (void)updateUsersOfGroup: (NSString *)groupName andColumns: (NSMutableArray *)arrayWithColumns andUpdates: (NSMutableArray *)updatesArray;
+
+- (void)updateMyLocation: (CLLocationCoordinate2D)coordinate andId: (NSString *)myID;
+
 @property (nonatomic, assign) id<DAOParseDelegate> delegate;
 
 @end

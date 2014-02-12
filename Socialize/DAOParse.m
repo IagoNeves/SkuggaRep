@@ -141,9 +141,9 @@
                   [self.delegate hasCompletedGroupDataFetch:socializeGroup];
               }];
          }
-         
     }];
 }
+
 
 - (void)saveGroup: (NSString *)groupName withUsers: (NSMutableArray *)groupUsers warningRadius:(NSUInteger)groupWarningRadius precisionRadius: (NSUInteger)groupPrecisionRadius andColor: (UIColor *) groupColor
 {
@@ -163,17 +163,77 @@
     
     for (SocializeUser *groupUser in  groupUsers)
     {
-        PFObject *user = [PFObject objectWithClassName:@"User"];
-        [user setObject:groupUser.name forKey:@"name"];
-        [user setObject:groupUser.photo forKey:@"photo"];
-        [user setObject:groupUser.identificator forKey:@"identificator"];
-        [user setObject:groupUser.lastUpdateDate forKey:@"lastUpdateDate"];
-        [user saveInBackground];
+        NSString *userIdentificator= groupUser.identificator;
         
-        [parseGroup addObject:user forKey:@"usersInTheGroup"];
+        //insert query
+        PFQuery *userQuery = [PFQuery queryWithClassName:@"User"];
+        [userQuery whereKey:@"identificator" equalTo:userIdentificator];
+        [userQuery findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error)
+         {
+            if (!results)
+            {
+                PFObject *user = [PFObject objectWithClassName:@"User"];
+                [user setObject:groupUser.name forKey:@"name"];
+                [user setObject:groupUser.photo forKey:@"photo"];
+                [user setObject:groupUser.identificator forKey:@"identificator"];
+                [user setObject:groupUser.lastUpdateDate forKey:@"lastUpdateDate"];
+                [user saveInBackground];
+                [parseGroup addObject:user forKey:@"usersInTheGroup"];
+            }
+            else
+             {
+                 [parseGroup addObject:results[0] forKey:@"usersInTheGroup"];
+             }
+        }];
     }
-    
     [parseGroup saveInBackground];
+}
+
+
+- (void)updateUsersOfGroup: (NSString *)groupName andColumns: (NSMutableArray *)arrayWithColumns andUpdates: (NSMutableArray *)updatesArray
+{
+    PFQuery *groupQuery = [PFQuery queryWithClassName:@"Groups"];
+    [groupQuery whereKey:@"groupName" equalTo:groupName];
+    
+    [groupQuery findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error)
+     {
+         NSMutableArray *usersInTheGroup = [[NSMutableArray alloc]init];
+         NSMutableArray *objectIDsArray = [[NSMutableArray alloc]init];
+         
+         usersInTheGroup = [results[0] objectForKey:@"usersInTheGroup"];
+         int i=0;
+         for (PFObject *user in usersInTheGroup)
+         {
+             objectIDsArray[i] = user.objectId;
+             
+             PFQuery *userQuery = [PFQuery queryWithClassName:@"User"];
+             [userQuery getObjectInBackgroundWithId:[NSString stringWithFormat:@"%@",objectIDsArray[i]] block:^(PFObject *user, NSError *error)
+              {
+                  SocializeUser *socializeUser = [[SocializeUser alloc]init];
+                  socializeUser = [socializeUser initWithName:[user objectForKey:@"name"] photo:[user objectForKey:@"photo"] andIdentifier:[user objectForKey:@"identificator"]];
+                  
+                  for (int j=0; j < [arrayWithColumns count]; j++)
+                  {
+                      user[[NSString stringWithFormat:@"%@",arrayWithColumns[j]]] = updatesArray[j];
+                  }
+                  [user saveInBackground];
+              }];
+             i++;
+         }
+     }];
+}
+
+- (void)updateMyLocation: (CLLocationCoordinate2D)coordinate andId: (NSString *)myID
+{
+     PFQuery *userQuery = [PFQuery queryWithClassName:@"User"];
+     [userQuery getObjectInBackgroundWithId:[NSString stringWithFormat:@"%@",myID] block:^(PFObject *user, NSError *error)
+      {
+          PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+          user[@"coordinate"] = geoPoint;
+          user[@"isRefreshPending"] = [NSNumber numberWithBool:NO];
+          [user saveInBackground];
+      }];
+
 }
 
 

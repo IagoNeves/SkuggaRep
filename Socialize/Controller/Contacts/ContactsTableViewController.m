@@ -282,62 +282,10 @@
             [cell setNeedsLayout];
         }
 
-        
-//        else
-//        {
-//            // criamos o rendered para esta Cell passando a stock
-//            renderer = contactPhotoURL;
-//            
-//            // colocamos esse renderer no dicionário de cache
-//            [self.photoCacheToRenderers setObject:renderer forKey:contactID];
-//            
-//            // operacao para ser executada fora da main queue
-//            NSBlockOperation *secondaryOperation = [NSBlockOperation blockOperationWithBlock:
-//                                                    ^{
-//                                                        // Aqui recuperamos a imagem do renderer, este processamento é pesado
-//                                                        NSData *contactPhotoData = [NSData dataWithContentsOfURL:renderer];
-//                                                        UIImage *renderedContactPhoto = [UIImage imageWithData:contactPhotoData];
-//                                                        
-//                                                        // Novamente apos termos a imagem para fazer o update da User Interface (UI)
-//                                                        // precisamos executar na Main Queue
-//                                                        [[NSOperationQueue mainQueue] addOperationWithBlock:
-//                                                         ^{
-//                                                             // atualiza a image da Cell com a imagem renderizada
-//                                                             cell.contactPhoto.image = renderedContactPhoto;
-//                                                         }];
-//                                                    }];
-//            // adiciona a operacao na nossa fila para execução
-//            [self.secondaryQueue addOperation:secondaryOperation];
-//            
-//            // guarda esta operation em um dicionário para um possível cancelamento
-//            [self.photoCancellingToRenderingOperations setObject:secondaryOperation forKey:contactID];
-//            
-//            // antes que a célula seja renderizada de fato coloca uma imagem default de placeholder
-//            // com precessamento bem mais rápido
-//            //[[cell imageView] setImage: [renderer placeholderImageOfSize:ROW_IMAGE_SIZE]];
-//            
-//            cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
-//            [cell setNeedsLayout];
-//        }
-//        
-//        
-        
     }
     else
     {
-        dispatch_queue_t downloadQueue = dispatch_queue_create("image downloader", NULL);
-        dispatch_async(downloadQueue, ^{
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.filteredContacts[indexPath.row][@"picture"][@"data"][@"url"]]];
-            UIImage * image = [UIImage imageWithData:data];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                cell.imageView.image = image;
-                cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
-                [cell setNeedsLayout];
-            });
-        });
-        
-        cell.textLabel.text = self.filteredContacts[indexPath.row][@"name"];
+
     }
     
 //    if (self.isSelectingUsers)

@@ -21,6 +21,9 @@
 
 @interface MainMapViewController : UIViewController <MKMapViewDelegate, UIAlertViewDelegate, CLLocationManagerDelegate>
 
+@property (nonatomic, retain) CLLocationManager *locationManager;
+
+
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 //- (void)performLogin;

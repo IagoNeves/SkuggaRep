@@ -22,7 +22,6 @@
 
 
 
-@property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *currentLocation;
 @property (nonatomic, strong) UIAlertView* alert;
 @property (nonatomic, strong) FacebookManager *facebookManager;
@@ -36,7 +35,7 @@
 @property (nonatomic, strong) NSMutableArray* groupMembers;
 @property (weak, nonatomic) IBOutlet UIButton *refreshButton;
 
-
+@property (nonatomic, strong) NSString* myId;
 
 
 @end
@@ -59,8 +58,40 @@
 {
     for (SocializeUser* user in self.groupMembers)
     {
-        
+        DAOParse *daoParse;
+        daoParse = [[DAOParse alloc]init];
+        NSMutableArray *columns = [[NSMutableArray alloc]init];
+        NSMutableArray *updates = [[NSMutableArray alloc]init];
+        columns[0] = @"isRefreshPending";
+        updates[0] = [NSNumber numberWithBool: YES];
+        [daoParse updateUsersOfGroup:self.groupName andColumns:columns andUpdates:updates];
     }
+    
+    
+
+}
+
+- (void)saveMyLocation
+{
+    CLLocation *location = self.locationManager.location;
+	CLLocationCoordinate2D coordinate = [location coordinate];
+    DAOParse *daoParse = [[DAOParse alloc]init];
+    [daoParse updateMyLocation:coordinate andId:self.myId];
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation
+{
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error
+{
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 - (CLLocationManager *)locationManager
