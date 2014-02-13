@@ -31,6 +31,7 @@
 		B801B4AA182BF2350089675D /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B801B4A9182BF2350089675D /* ContactsTableViewController.m */; };
 		B801B4AF182D33D00089675D /* eldoradoLocation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = B801B4AE182D33D00089675D /* eldoradoLocation.gpx */; };
 		B81BD1C418882F5800B27708 /* SocializeGroupSpecific.m in Sources */ = {isa = PBXBuildFile; fileRef = B81BD1C318882F5800B27708 /* SocializeGroupSpecific.m */; };
+		B82CEC9018AD463100EB6432 /* LoginUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B82CEC8F18AD463100EB6432 /* LoginUIViewController.m */; };
 		B84B2A191823D34C00848BFC /* MainMapViewAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = B84B2A161823D34C00848BFC /* MainMapViewAnnotation.m */; };
 		B85B5E69181E9B8E00008617 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B85B5E68181E9B8E00008617 /* Main.storyboard */; };
 		B85B5E6B181E9C4100008617 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85B5E6A181E9C4100008617 /* MapKit.framework */; };
@@ -139,6 +140,8 @@
 		B801B4AE182D33D00089675D /* eldoradoLocation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = eldoradoLocation.gpx; sourceTree = "<group>"; };
 		B81BD1C218882F5800B27708 /* SocializeGroupSpecific.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocializeGroupSpecific.h; sourceTree = "<group>"; };
 		B81BD1C318882F5800B27708 /* SocializeGroupSpecific.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocializeGroupSpecific.m; sourceTree = "<group>"; };
+		B82CEC8E18AD463100EB6432 /* LoginUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginUIViewController.h; sourceTree = "<group>"; };
+		B82CEC8F18AD463100EB6432 /* LoginUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginUIViewController.m; sourceTree = "<group>"; };
 		B84B2A151823D34C00848BFC /* MainMapViewAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMapViewAnnotation.h; sourceTree = "<group>"; };
 		B84B2A161823D34C00848BFC /* MainMapViewAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMapViewAnnotation.m; sourceTree = "<group>"; };
 		B85B5E68181E9B8E00008617 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -439,6 +442,8 @@
 			children = (
 				B8DFB9FB181A92D700FDE302 /* SCLoginViewController.h */,
 				B8DFB9FC181A92D700FDE302 /* SCLoginViewController.m */,
+				B82CEC8E18AD463100EB6432 /* LoginUIViewController.h */,
+				B82CEC8F18AD463100EB6432 /* LoginUIViewController.m */,
 			);
 			path = Facebook;
 			sourceTree = "<group>";
@@ -638,6 +643,7 @@
 				B878620D18169BC00056E726 /* AppDelegate.m in Sources */,
 				48D4035C1833AF5600C617A3 /* FacebookManagerStored.m in Sources */,
 				B85B5E7C181E9E2B00008617 /* AboutViewController.m in Sources */,
+				B82CEC9018AD463100EB6432 /* LoginUIViewController.m in Sources */,
 				17E2BD7C18819817009C42A6 /* ContactCell.m in Sources */,
 				B84B2A191823D34C00848BFC /* MainMapViewAnnotation.m in Sources */,
 				17379EFA184A2B6A00FF78F4 /* ColorPickerView.m in Sources */,

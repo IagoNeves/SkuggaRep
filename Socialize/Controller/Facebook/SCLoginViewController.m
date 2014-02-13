@@ -8,6 +8,8 @@
 
 
 #import "SCLoginViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
+
 
 @interface SCLoginViewController ()
 
@@ -31,7 +33,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.facebookManager = [FacebookManagerStored sharedInstance];
+
     
+    
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,7 +52,8 @@
 
 - (void)performLogin
 {
-    if ([self.facebookManager isLoggedIn]) {
+    if ([self.facebookManager isLoggedIn])
+    {
         
         [self.facebookManager login:nil];
         self.facebookManager.isLogedIn = YES;
@@ -55,7 +61,8 @@
     }
 }
 
-- (IBAction)performLogin:(id)sender {
+- (IBAction)performLogin:(id)sender
+{
     [self.spinner startAnimating];
     
     [self.facebookManager login:^{
@@ -65,5 +72,7 @@
     }];
     self.facebookManager.isLogedIn = true;
 }
+
+
 
 @end

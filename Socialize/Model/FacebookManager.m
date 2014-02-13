@@ -9,7 +9,7 @@
 #import "FacebookManager.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface FacebookManager()
+@interface FacebookManager()// <FBLoginViewDelegate>
 
 @end
 
@@ -53,6 +53,29 @@
     }];
 }
 
+- (void)fetchMyself:(void(^)())completionHandler
+{
+    FBRequest *myselfRequest = [FBRequest requestForGraphPath:@"me?fields=id,name"];
+    [myselfRequest startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error)
+    {
+        NSLog(@"Result: %@", result);
+        NSDictionary *userInfo = (NSDictionary *)result;
+        NSString *userName;
+        NSString *userId;
+        userName = [userInfo objectForKey:@"name"];
+        userId = [userInfo objectForKey:@"id"];
+
+        
+        NSArray *friendsUnordered = [result objectForKey:@"data"];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+        self.friends = [friendsUnordered sortedArrayUsingDescriptors:@[sortDescriptor]];
+        completionHandler();
+    }];
+}
+
+
+
+
 
 
 //- (void) getFacebookName
@@ -70,5 +93,15 @@
 //    self.myName = [userInfo objectForKey:@"name"];
 //    fb_id = [userInfo objectForKey:@"id"];
 //}
+
+// This method will be called when the user information has been fetched
+- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
+                            user:(id<FBGraphUser>)user
+{
+    NSString *userName = user.name;
+    
+//    self.profilePictureView.profileID = user.id;
+//    self.nameLabel.text = user.name;
+}
 
 @end

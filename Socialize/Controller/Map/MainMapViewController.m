@@ -66,9 +66,11 @@
         updates[0] = [NSNumber numberWithBool: YES];
         [daoParse updateUsersOfGroup:self.groupName andColumns:columns andUpdates:updates];
     }
-    
-    
+}
 
+- (void)groupMemberHasUpdatedLocation
+{
+    
 }
 
 - (void)saveMyLocation
@@ -135,6 +137,18 @@
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

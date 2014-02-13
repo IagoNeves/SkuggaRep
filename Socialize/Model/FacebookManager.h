@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface FacebookManager : NSObject
 
@@ -20,5 +21,6 @@
 - (void)login:(void(^)())completionHandler;
 - (void)logout;
 - (void)fetchFriends:(void(^)())completionHandler;
+- (void)fetchMyself:(void(^)())completionHandler;
 
 @end

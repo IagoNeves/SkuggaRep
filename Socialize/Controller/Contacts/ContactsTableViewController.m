@@ -118,8 +118,7 @@
                  self.allContactsIDsSectioned[i] = [[NSMutableArray alloc]init];
              }
              [self.tableView reloadData];
-         }
-         ];
+         }];
     }
     
     
@@ -254,7 +253,7 @@
                     renderedContactPhoto = [UIImage imageWithData:contactPhotoData];
                 }
                 // colocamos esse renderer no dicionário de cache
-                [self.photoCacheToRenderers setObject:renderedContactPhoto forKey:contactID];
+                [self.photoCacheToRenderers setObject:renderedContactPhoto forKey:contactID]; //this is buggy: it's not the code's fault that it doesnt load images(it's related to the internet(check the sample faceebook)). But when it doesnt load images, it says bad access after a while and crashes
                 
                 // Novamente apos termos a imagem para fazer o update da User Interface (UI)
                 // precisamos executar na Main Queue
