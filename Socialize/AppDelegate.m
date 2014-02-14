@@ -17,6 +17,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [FBProfilePictureView class]; //pending need
     
     //navigationbar color
     [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0x550A77)];

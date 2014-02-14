@@ -13,9 +13,10 @@
 //@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
 //@property (strong, nonatomic) IBOutlet UILabel *statusLabel;
 
-@property (strong, nonatomic) FBProfilePictureView *profilePictureView;
+//@property (strong, nonatomic) FBProfilePictureView *profilePictureView;
 @property (strong, nonatomic) UILabel *nameLabel;
 @property (strong, nonatomic) UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet FBProfilePictureView *profilePictureView;
 
 @end
 
@@ -24,7 +25,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
         
         // Create a FBLoginView to log the user in with basic, email and likes permissions
@@ -34,7 +36,6 @@
         // Set this loginUIViewController to be the loginView button's delegate
         loginView.delegate = self;
         
-        // Align the button in the center horizontally
         loginView.frame = CGRectOffset(loginView.frame,
                                        (self.view.center.x - (loginView.frame.size.width / 2)),
                                        5);
@@ -51,7 +52,8 @@
 
 // This method will be called when the user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
-                            user:(id<FBGraphUser>)user {
+                            user:(id<FBGraphUser>)user
+{
     self.profilePictureView.profileID = user.id;
     self.nameLabel.text = user.name;
 }
