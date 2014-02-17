@@ -21,6 +21,12 @@
 
 @property (nonatomic) NSUInteger colorIndex;
 
+@property (nonatomic, retain) NSString *myName;
+
+@property (nonatomic, retain) NSString *myID;
+
+@property (nonatomic, retain) NSString *myPhoto;
+
 +(Singleton *)singleton;
 
 @end

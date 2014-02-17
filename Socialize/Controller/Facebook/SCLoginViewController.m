@@ -54,7 +54,6 @@
 {
     if ([self.facebookManager isLoggedIn])
     {
-        
         [self.facebookManager login:nil];
         self.facebookManager.isLogedIn = YES;
         [self performSegueWithIdentifier:@"initialTabBarSegue" sender:self];

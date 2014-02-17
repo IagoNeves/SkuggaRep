@@ -7,67 +7,130 @@
 //
 
 #import "LoginUIViewController.h"
+#import "Singleton.h"
+#import "FacebookManager.h"
 
 @interface LoginUIViewController ()
-//@property (strong, nonatomic) IBOutlet FBProfilePictureView *profilePictureView;
-//@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
-//@property (strong, nonatomic) IBOutlet UILabel *statusLabel;
 
-//@property (strong, nonatomic) FBProfilePictureView *profilePictureView;
-@property (strong, nonatomic) UILabel *nameLabel;
-@property (strong, nonatomic) UILabel *statusLabel;
-@property (weak, nonatomic) IBOutlet FBProfilePictureView *profilePictureView;
 
 @end
 
 @implementation LoginUIViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+//-(id)initWithCoder:(NSCoder *)aDecoder
+//{
+//    self = [super initWithCoder:aDecoder];
+//    [self customInit];
+//    return self;
+//}
+
+- (void) customInit
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
-        // Custom initialization
+    if (self) {
         
-        // Create a FBLoginView to log the user in with basic, email and likes permissions
-        // You should ALWAYS ask for basic permissions (basic_info) when logging the user in
+        /*
+         // Custom initialization
+         
+         // Create a FBLoginView to log the user in with basic, email and likes permissions
+         // You should ALWAYS ask for basic permissions (basic_info) when logging the user in
+         
+         
+         FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:@[@"basic_info", @"email", @"user_likes"]];
+         
+         
+         
+         // Set this loginUIViewController to be the loginView button's delegate
+         loginView.delegate = self;
+         
+         loginView.frame = CGRectMake(9, 482, 170, 30);
+         
+         for (id obj in loginView.subviews)
+         {
+         if ([obj isKindOfClass:[UIButton class]])
+         {
+         UIButton * loginButton =  obj;
+         //UIImage *loginImage = [UIImage imageNamed:@"face_1x.png"];
+         //[loginButton setBackgroundImage:loginImage forState:UIControlStateNormal];
+         [loginButton setBackgroundImage:nil forState:UIControlStateSelected];
+         [loginButton setTitle:@"Log in" forState:UIControlStateNormal];
+         
+         [loginButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+         [loginButton setTitle:@"Log out" forState:UIControlStateHighlighted];
+         
+         [loginButton sizeToFit];
+         }
+         if ([obj isKindOfClass:[UILabel class]])
+         {
+         UILabel * loginLabel =  obj;
+         loginLabel.text = @"Log in to facebook";
+         loginLabel.frame = CGRectMake(50, 50, 271, 37);
+         }
+         }
+         
+         
+         // Add the button to the view
+         [self.view addSubview:loginView];
+         */
+        
         FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:@[@"basic_info", @"email", @"user_likes"]];
         
         // Set this loginUIViewController to be the loginView button's delegate
         loginView.delegate = self;
         
-        loginView.frame = CGRectOffset(loginView.frame,
-                                       (self.view.center.x - (loginView.frame.size.width / 2)),
-                                       5);
+        // Align the button in the center horizontally
+        loginView.frame = CGRectMake(0, 0, 320, 45);
+        //loginView.frame = CGRectOffset(loginView.frame, (self.view.center.x - (loginView.frame.size.width / 2)), 5);
         
         // Align the button in the center vertically
-        loginView.center = self.view.center;
+        //loginView.center = self.view;
         
         // Add the button to the view
         [self.view addSubview:loginView];
         
     }
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    [self customInit];
     return self;
 }
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self customInit];
+
+    
+    return;
+}
+
 
 // This method will be called when the user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
                             user:(id<FBGraphUser>)user
 {
-    self.profilePictureView.profileID = user.id;
-    self.nameLabel.text = user.name;
+    
+    [Singleton singleton].myName = user[@"name"];
+    [Singleton singleton].myID = user[@"id"];
+    [Singleton singleton].myPhoto = user[@"picture"][@"data"][@"url"];
+    NSString *a = [[NSString alloc]init];
+    a =[Singleton singleton].myPhoto;
+  
+    
 }
 
 // Implement the loginViewShowingLoggedInUser: delegate method to modify your app's UI for a logged-in user experience
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
-    self.statusLabel.text = @"You're logged in as";
+//    self.statusLabel.text = @"You're logged in as";
 }
 
 // Implement the loginViewShowingLoggedOutUser: delegate method to modify your app's UI for a logged-out user experience
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
-    self.profilePictureView.profileID = nil;
-    self.nameLabel.text = @"";
-    self.statusLabel.text= @"You're not logged in!";
+//    self.profilePictureView.profileID = nil;
+//    self.nameLabel.text = @"";
+//    self.statusLabel.text= @"You're not logged in!";
 }
 
 // You need to override loginView:handleError in order to handle possible errors that can occur during login
@@ -114,3 +177,5 @@
 }
 
 @end
+
+

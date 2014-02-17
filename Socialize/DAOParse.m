@@ -190,6 +190,7 @@
 }
 
 
+
 - (void)updateUsersOfGroup: (NSString *)groupName andColumns: (NSMutableArray *)arrayWithColumns andUpdates: (NSMutableArray *)updatesArray
 {
     PFQuery *groupQuery = [PFQuery queryWithClassName:@"Groups"];

@@ -23,6 +23,9 @@
         shared.allGroups = [[NSMutableArray alloc]init];
         shared.allGroupsSpecific = [[NSMutableArray alloc]init];
         shared.groupsToBeShowOnMap = [[NSMutableArray alloc] init];
+        shared.myID = [[NSString alloc]init];
+        shared.myName = [[NSString alloc]init];
+        shared.myPhoto = [[NSString alloc]init];
     });
     return shared;
 }
